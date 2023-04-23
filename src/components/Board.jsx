@@ -87,15 +87,6 @@ export default function Board() {
       return checkWinnerHorizontal() || checkWinnerVertical() || checkWinnerDiagonal()
    }
 
-   useEffect(() => {
-      if (checkWinner()) {
-         console.log('Winner: ', checkWinner())
-         setWinner(checkWinner())
-      } else if (!checkWinner() && board.every((row) => row.every((col) => col !== ''))) {
-         setWinner('Draw')
-      }
-   }, [board])
-
    const clickSquare = (row, col) => {
       const newBoard = [...board]
       if (!winner && newBoard[row][col] === '') {
@@ -115,8 +106,18 @@ export default function Board() {
       setWinner('')
    }
 
+   useEffect(() => {
+      if (checkWinner()) {
+         console.log('Winner: ', checkWinner())
+         setWinner(checkWinner())
+      } else if (!checkWinner() && board.every((row) => row.every((col) => col !== ''))) {
+         setWinner('Draw')
+      }
+   }, [board])
+
    return (
       <>
+         <p>Cờ ca rô</p>
          {winner === 'Draw' && <p>Draw</p>}
          {winner && winner !== 'Draw' && <p>Winner: {winner}</p>}
          <div className="border border-black">
