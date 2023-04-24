@@ -6,8 +6,8 @@ export default function Board() {
    const [currentPlayer, setCurrentPlayer] = useState('X')
    const [board, setBoard] = useState(() => {
       const arr = []
-      for (let i = 0; i < 9; i++) {
-         arr[i] = new Array(9).fill('')
+      for (let i = 0; i < 10; i++) {
+         arr[i] = new Array(10).fill('')
       }
       return arr
    })
@@ -22,8 +22,8 @@ export default function Board() {
    }
 
    const checkWinnerHorizontal = () => {
-      for (let row = 0; row < 9; row++) {
-         for (let col = 0; col < 5; col++) {
+      for (let row = 0; row < 10; row++) {
+         for (let col = 0; col < 10-4; col++) {
             if (
                board[row][col] != '' && // Nếu ô đó không rỗng
                board[row][col] === board[row][col + 1] &&
@@ -38,8 +38,8 @@ export default function Board() {
    }
 
    const checkWinnerVertical = () => {
-      for (let col = 0; col < 9; col++) {
-         for (let row = 0; row < 5; row++) {
+      for (let col = 0; col < 10; col++) {
+         for (let row = 0; row < 10-4; row++) {
             if (
                board[row][col] != '' && // Nếu ô đó không rỗng
                board[row][col] === board[row + 1][col] &&
@@ -54,8 +54,8 @@ export default function Board() {
    }
 
    const checkWinnerDiagonal = () => {
-      for (let row = 4; row < 9; row++) {
-         for (let col = 4; col < 9; col++) {
+      for (let row = 4; row < 10; row++) {
+         for (let col = 4; col < 10; col++) {
             if (
                board[row][col] &&
                board[row][col] === board[row - 1][col - 1] &&
@@ -68,8 +68,8 @@ export default function Board() {
          }
       }
 
-      for (let row = 0; row < 5; row++) {
-         for (let col = 0; col < 5; col++) {
+      for (let row = 0; row < 10-4; row++) {
+         for (let col = 0; col < 10-4; col++) {
             if (
                board[row][col] &&
                board[row][col] === board[row + 1][col + 1] &&
@@ -98,8 +98,8 @@ export default function Board() {
 
    const resetBoard = () => {
       const arr = []
-      for (let i = 0; i < 9; i++) {
-         arr[i] = new Array(9).fill('')
+      for (let i = 0; i < 10; i++) {
+         arr[i] = new Array(10).fill('')
       }
       setBoard(arr)
       setCurrentPlayer('X')
