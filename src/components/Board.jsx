@@ -1,13 +1,13 @@
-import React, { useEffect } from 'react'
+import React, { useCallback, useEffect } from 'react'
 import { useState } from 'react'
 import Square from './Square'
 
-export default function Board() {
+export default function Board({ boardRow, boardCol }) {
    const [currentPlayer, setCurrentPlayer] = useState('X')
    const [board, setBoard] = useState(() => {
       const arr = []
-      for (let i = 0; i < 10; i++) {
-         arr[i] = new Array(10).fill('')
+      for (let i = 0; i < boardRow; i++) {
+         arr[i] = new Array(boardCol).fill('')
       }
       return arr
    })
@@ -22,8 +22,8 @@ export default function Board() {
    }
 
    const checkWinnerHorizontal = () => {
-      for (let row = 0; row < 10; row++) {
-         for (let col = 0; col < 10-4; col++) {
+      for (let row = 0; row < boardRow; row++) {
+         for (let col = 0; col < boardCol - 4; col++) {
             if (
                board[row][col] != '' && // Nếu ô đó không rỗng
                board[row][col] === board[row][col + 1] &&
@@ -38,8 +38,8 @@ export default function Board() {
    }
 
    const checkWinnerVertical = () => {
-      for (let col = 0; col < 10; col++) {
-         for (let row = 0; row < 10-4; row++) {
+      for (let col = 0; col < boardCol; col++) {
+         for (let row = 0; row < boardRow - 4; row++) {
             if (
                board[row][col] != '' && // Nếu ô đó không rỗng
                board[row][col] === board[row + 1][col] &&
@@ -54,8 +54,8 @@ export default function Board() {
    }
 
    const checkWinnerDiagonal = () => {
-      for (let row = 4; row < 10; row++) {
-         for (let col = 4; col < 10; col++) {
+      for (let row = 4; row < boardRow; row++) {
+         for (let col = 4; col < boardCol; col++) {
             if (
                board[row][col] &&
                board[row][col] === board[row - 1][col - 1] &&
@@ -68,8 +68,8 @@ export default function Board() {
          }
       }
 
-      for (let row = 0; row < 10-4; row++) {
-         for (let col = 0; col < 10-4; col++) {
+      for (let row = 0; row < boardRow - 4; row++) {
+         for (let col = 0; col < boardCol - 4; col++) {
             if (
                board[row][col] &&
                board[row][col] === board[row + 1][col + 1] &&
@@ -98,8 +98,8 @@ export default function Board() {
 
    const resetBoard = () => {
       const arr = []
-      for (let i = 0; i < 10; i++) {
-         arr[i] = new Array(10).fill('')
+      for (let i = 0; i < boardRow; i++) {
+         arr[i] = new Array(boardCol).fill('')
       }
       setBoard(arr)
       setCurrentPlayer('X')
@@ -128,10 +128,10 @@ export default function Board() {
                         return (
                            <Square
                               value={square}
-                              key={row * 9 + col}
-                              onClick={() => {
+                              key={row * boardRow + col}
+                              onClick={() =>
                                  clickSquare(row, col)
-                              }}
+                              }
                            />
                         )
                      })}
