@@ -1,5 +1,5 @@
-import React, { useCallback, useEffect } from 'react'
-import { useState } from 'react'
+import React, { useEffect, useState } from 'react'
+import { AutoSizer, Grid } from 'react-virtualized'
 import Square from './Square'
 
 export default function Board({ boardRow, boardCol }) {
@@ -84,7 +84,11 @@ export default function Board({ boardRow, boardCol }) {
    }
 
    const checkWinner = () => {
-      return checkWinnerHorizontal() || checkWinnerVertical() || checkWinnerDiagonal()
+      return (
+         checkWinnerHorizontal() ||
+         checkWinnerVertical() ||
+         checkWinnerDiagonal()
+      )
    }
 
    const clickSquare = (row, col) => {
@@ -106,21 +110,44 @@ export default function Board({ boardRow, boardCol }) {
       setWinner('')
    }
 
+   const cellRenderer = ({ columnIndex, key, rowIndex, style }) => {
+      return (
+         <div key={key} style={style}>
+            <Square
+               value={board[rowIndex][columnIndex]}
+               onClick={() => clickSquare(rowIndex, columnIndex)}
+            />
+         </div>
+      )
+   }
+
    useEffect(() => {
       if (checkWinner()) {
          console.log('Winner: ', checkWinner())
          setWinner(checkWinner())
-      } else if (!checkWinner() && board.every((row) => row.every((col) => col !== ''))) {
+      } else if (
+         !checkWinner() &&
+         board.every((row) => row.every((col) => col !== ''))
+      ) {
          setWinner('Draw')
       }
    }, [board])
 
    return (
-      <>
+      <div className="flex flex-col w-screen h-screen">
          <p>Cờ ca rô</p>
          {winner === 'Draw' && <p>Draw</p>}
          {winner && winner !== 'Draw' && <p>Winner: {winner}</p>}
-         <div className="border border-black">
+         {winner && (
+            <button
+               onClick={() => {
+                  resetBoard()
+               }}
+            >
+               Play again
+            </button>
+         )}
+         {/* <div className="border border-black">
             {board.map((arr, row) => {
                return (
                   <div className="flex justify-center" key={row}>
@@ -138,16 +165,25 @@ export default function Board({ boardRow, boardCol }) {
                   </div>
                )
             })}
+         </div> */}
+
+         <div className="flex-1">
+            <AutoSizer>
+               {({ width, height }) => (
+                  <Grid
+                     cellRenderer={cellRenderer}
+                     height={height}
+                     width={width}
+                     // overscanColumnCount={overscanColumnCount}
+                     // overscanRowCount={overscanRowCount}
+                     rowHeight={48}
+                     columnWidth={48}
+                     columnCount={boardCol}
+                     rowCount={boardRow}
+                  />
+               )}
+            </AutoSizer>
          </div>
-         {winner && (
-            <button
-               onClick={() => {
-                  resetBoard()
-               }}
-            >
-               Play again
-            </button>
-         )}
-      </>
+      </div>
    )
 }
