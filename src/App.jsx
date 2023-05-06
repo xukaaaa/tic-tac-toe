@@ -5,8 +5,7 @@ import './App.css'
 import Board from './components/Board'
 
 function App() {
-
-   return <Board boardRow={100} boardCol={100} />
+   return <Board boardRow={1000} boardCol={1000} />
 }
 
 export default App
